@@ -1,56 +1,80 @@
 <?php
-  // MediaWiki PDF Extension Ver 0.2
-  // Set up MediaWiki to react to the "<PDF>" tag
-  // Original file by Nilam Doctor
-  // <ceo@qualifiedtutorsinc.com> to allow local PDF files
-
-  $wgExtensionFunctions[] = "wfIFRAME";
-  function wfIFRAME()
-  {
+$wgExtensionFunctions[] = "wfIFRAME";
+function wfIFRAME() {
     global $wgParser;
     $wgParser->setHook( "iframe", "RenderIFRAME" );
-  }
+}
 
-  function RenderIFRAME( $input, $argv )
-  {
+function getPartOrError( $parsed, $part, $url ) {
+    if ( !isset( $parsed[$part] ) ) {
+        throw new Exception( "$part not found in $url" );
+    }
+    return $parsed[$part];
+}
+
+function cleanURL( $url ) {
+    $ret = false;
+    $parsed = parse_url( $url );
+    if ( $parsed ) {
+        try {
+            $ret = getPartOrError( $parsed, 'scheme', $url ) . '://';
+            $ret .= getPartOrError( $parsed, 'host', $url );
+            if ( isset( $parsed['port'] ) ) {
+                $ret .= ':' . $parsed['port'];
+            }
+            $ret .= getPartOrError( $parsed, 'path', $url );
+            if ( isset( $parsed['query'] ) ) {
+                $ret .= '?' . $parsed['query'];
+            }
+            if ( isset( $parsed['fragment'] ) ) {
+                $ret .= '#' . $parsed['fragment'];
+            }
+        } catch ( Exception $e ) {
+            $ret = false;
+        }
+    }
+    return $ret;
+}
+
+function RenderIFRAME( $input, $argv ) {
     global $wgScriptPath;
-    $output = "";
-    // no safety check: only .pdf files
-    clearstatcache(); 
 
-    if ( stripos($input , "http") === 0 || stripos($input , "ftp") === 0 )
-    {
-      // external URL
-      if (!preg_match("/;/", $input ))
-//      { 
-//        if (preg_match('#^(http://|ftp://)[a-zA-Z][a-zA-Z0-9\-\.]*\.(conocophillips.net|conoco.net|ppco.com)#', $input))
-//        {
-          $url = $input;
-//        }
-//        else
-//        {
-//          $output = "Error: the link \"$input\" is not recognized as an allowed internal/external site.";
-//        }
-//        $url = $input;
-//      }
-      else
-      {
-        $output = "Error: The link \"$input\" contains a \";\", which is not allowed.";
-      }
+    // no safety check: only .pdf files
+    clearstatcache();
+    $url = null;
+    if ( stripos($input , "http") === 0 || stripos($input , "ftp") === 0 ) {
+        $url = cleanURL( $input );
+    } else if ( isset( $argv['src'] ) ) {
+        $url = cleanURL( $argv['src'] );
+    } else if ( isset( $argv['url'] ) ) {
+        $url = cleanURL( $argv['url'] );
     }
-    else { 
-      // internal Media:
-      if (file_exists ( $input )) //safety check: if file exists, we assume it is safe.
-        $url = $input;
-      else 
-        $output = "Error: The file \"$input\" was not found.";
-      }
-    if (empty($output)) { //no error occured
-      $width  = isset($argv['width']) ? $argv['width']  : 800;
-      $height = isset($argv['height'])? $argv['height'] : 600;
-      $id = basename($input, ".pdf");
-      $output = '<iframe width="' . $width . '" height="' . $height . '" src="' . $url . '" frameborder="0" framebordercolor="#000000"></iframe>';
+
+    if ( $url ) { //no error occured
+        $attr['src'] = $url;
+        if ( !isset( $argv['width'] ) && !isset( $argv['height'] ) ) {
+            $attr['width']  = 800;
+            $attr['height'] = 600;
+        } else {
+            if ( isset( $argv['width'] ) ) {
+                $attr['width'] = $argv['width'];
+            } else {
+                $attr['width'] = $argv['height'];
+            }
+            if ( isset( $argv['height'] ) ) {
+                $attr['height'] = $argv['height'];
+            } else {
+                $attr['height'] = $argv['width'];
+            }
+        }
+        if ( isset( $argv['seamless'] ) ) {
+            $attr['seamless'] = true;
+        }
+        if ( isset( $argv['allowfullscreen'] ) ) {
+            $attr['allowfullscreen'] = true;
+        }
+
+        return Html::rawElement( 'iframe', $attr );
     }
-    return $output;
-  }
-?>
+    return '';
+}
