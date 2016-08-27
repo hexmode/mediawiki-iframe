@@ -1,6 +1,5 @@
 {
     "name": "IFrame",
-    "namemsg": "iframe-extensionname",
     "version": "0.1",
     "author": [
 		"[//mwstake.org Mark A. Hershberger]"
@@ -16,6 +15,8 @@
     "AutoloadClasses": {
 		"IFrame": "IFrame.class.php"
     },
-    "ExtensionFunctions": "IFrame::init",
+    "Hooks": {
+        "ParserFirstCallInit": "IFrame::init"
+    },
     "manifest_version": 1
 }
