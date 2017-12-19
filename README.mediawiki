@@ -1,0 +1,4 @@
+== IFrame extension for MediaWiki ==
+
+This is a pretty basic iframe extension.  It attempts to sanitize the url
+
