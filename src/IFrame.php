@@ -138,7 +138,7 @@ class IFrame {
 			return '';
 		}
 
-		// no error occured
+		// no error occurred
 		$attr['src'] = $url;
 		if ( !isset( $argv['width'] ) && !isset( $argv['height'] ) ) {
 			$attr['width']	= 800;
