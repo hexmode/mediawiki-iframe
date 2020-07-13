@@ -74,6 +74,7 @@ class IFrame {
 	 * @todo Make hosts config var
 	 */
 	protected static function isSafeHost( $host ) {
+		return $host;
 		$validHosts = [ 'www.wikipathways.org' ];
 		$inv = array_flip( $validHosts );
 		if ( !isset( $inv[$host] ) ) {
