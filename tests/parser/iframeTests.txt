@@ -1,0 +1,12 @@
+!! Version 2
+# Force the test runner to ensure the extension is loaded
+!! functionhooks
+iframe
+!! endfunctionhooks
+
+!! test
+Test basic iframe
+!! wikitext
+<iframe>
+!! html
+!! end

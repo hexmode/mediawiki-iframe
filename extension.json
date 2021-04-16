@@ -16,7 +16,7 @@
 		"MediaWiki\\Extension\\IFrame": "src/IFrame.php"
 	},
 	"Hooks": {
-		"ParserFirstCallInit": "MediaWiki\\Extension\\IFrame::init"
+		"ParserFirstCallInit": "MediaWiki\\Extension\\IFrame::register"
 	},
 	"manifest_version": 1
 }

@@ -1,6 +1,10 @@
 {
 	"name": "mediawiki/iframe",
 	"type": "mediawiki-extension",
+	"license": "gpl-3.0",
+	"require": {
+		"nichework/tag-builder": "^1.0"
+	},
 	"require-dev": {
 		"mediawiki/mediawiki-codesniffer": "30.0.0",
 		"mediawiki/mediawiki-phan-config": "0.9.1",
@@ -8,7 +12,6 @@
 		"jakub-onderka/php-parallel-lint": "1.0.0",
 		"vimeo/psalm": "^4.6"
 	},
-	"require": {},
 	"scripts": {
 		"lint": [
 			"parallel-lint . --exclude vendor --exclude node_modules",
