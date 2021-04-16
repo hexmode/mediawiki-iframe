@@ -29,19 +29,19 @@ class IFrame {
 	 *
 	 * @param Parser $parser from mw
 	 */
-	public static function init( Parser $parser ) {
+	public static function init( Parser $parser ): void {
 		$parser->setHook( "iframe", "MediaWiki\\Extension\\IFrame::renderIFRAME" );
 	}
 
 	/**
 	 * Convenience function for throwing errors when we need to
 	 *
-	 * @param array $parsed the result of parse_url()
+	 * @param array<string,string|int> $parsed the result of parse_url()
 	 * @param string $part a key into $parsed
 	 * @param string $url the whole url, used for error messages
-	 * @return string the part requested
+	 * @return int|string the part requested
 	 */
-	protected static function getPartOrError( $parsed, $part, $url ) {
+	protected static function getPartOrError( array $parsed, string $part, string $url ) {
 		if ( !isset( $parsed[$part] ) ) {
 			throw new MWException( "$part not found in $url" );
 		}
@@ -55,7 +55,7 @@ class IFrame {
 	 * @return string
 	 * @todo Make schemes config var
 	 */
-	protected static function isSafeScheme( $scheme ) {
+	protected static function isSafeScheme( string $scheme ): string {
 		$validSchemes = [ "http", "https", "ftp" ];
 		$inv = array_flip( $validSchemes );
 		if ( !isset( $inv[$scheme] ) ) {
@@ -73,8 +73,7 @@ class IFrame {
 	 * @return string
 	 * @todo Make hosts config var
 	 */
-	protected static function isSafeHost( $host ) {
-		return $host;
+	protected static function isSafeHost( string $host ): string {
 		$validHosts = [ 'www.wikipathways.org' ];
 		$inv = array_flip( $validHosts );
 		if ( !isset( $inv[$host] ) ) {
@@ -89,16 +88,17 @@ class IFrame {
 	 * Clean up the URL.  Could whitelist hosts, types, and such here.
 	 *
 	 * @param string $url to clean
-	 * @return string
+	 * @return ?string
 	 */
-	protected static function cleanURL( $url ) {
-		$ret = false;
+	protected static function cleanURL( string $url ): ?string {
+		$ret = null;
 		$parsed = parse_url( $url );
 		if ( $parsed ) {
 			try {
-				$ret = self::isSafeScheme( self::getPartOrError( $parsed, 'scheme', $url ) ). '://';
+				$ret = self::isSafeScheme( strval( self::getPartOrError( $parsed, 'scheme', $url ) ) )
+					 . '://';
 				// Whitelist hosts here
-				$ret .= self::isSafeHost( self::getPartOrError( $parsed, 'host', $url ) );
+				$ret .= self::isSafeHost( strval( self::getPartOrError( $parsed, 'host', $url ) ) );
 				if ( isset( $parsed['port'] ) ) {
 					$ret .= ':' . $parsed['port'];
 				}
@@ -110,7 +110,7 @@ class IFrame {
 					$ret .= '#' . $parsed['fragment'];
 				}
 			} catch ( MWException $e ) {
-				$ret = false;
+				$ret = null;
 			}
 		}
 		return $ret;
@@ -120,12 +120,13 @@ class IFrame {
 	 * Parser function to handle <iframe> elements
 	 *
 	 * @param string $input What is inside the <iframe> element
-	 * @param array $argv attributes on <iframe> element
+	 * @param array<string, string> $argv attributes on <iframe> element
 	 * @return string that parser will inject
 	 */
-	public static function renderIFRAME( $input, $argv ) {
+	public static function renderIFRAME( string $input, array $argv ): string {
 		// no safety check: only .pdf files
 		$url = null;
+		$attr = [];
 		if ( stripos( $input, "http://" ) === 0 ||
 		stripos( $input, "ftp" ) === 0 ) {
 			$url = self::cleanURL( $input );
@@ -135,7 +136,7 @@ class IFrame {
 			$url = self::cleanURL( $argv['url'] );
 		}
 
-		if ( !$url ) {
+		if ( $url === null ) {
 			return '';
 		}
 

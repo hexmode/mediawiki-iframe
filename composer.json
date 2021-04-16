@@ -1,0 +1,31 @@
+{
+	"name": "mediawiki/iframe",
+	"type": "mediawiki-extension",
+	"require-dev": {
+		"mediawiki/mediawiki-codesniffer": "30.0.0",
+		"mediawiki/mediawiki-phan-config": "0.9.1",
+		"mediawiki/minus-x": "1.0.0",
+		"jakub-onderka/php-parallel-lint": "1.0.0",
+		"vimeo/psalm": "^4.6"
+	},
+	"require": {},
+	"scripts": {
+		"lint": [
+			"parallel-lint . --exclude vendor --exclude node_modules",
+			"minus-x check .",
+			"phpcs -p -s --report=emacs",
+			"phan --no-progress-bar -m text | sed 's, ,:,'",
+			"psalm --output-format=emacs --show-info=true"
+		],
+		"fix": [
+			"minus-x fix .",
+			"phpcbf",
+			"PHAN_DISABLE_XDEBUG_WARN=1 phan --no-progress-bar -m text --automatic-fix",
+			"psalm --alter --issues=all"
+		]
+	},
+	"extra": {
+		"installer-name": "IFrame",
+		"phan-taint-check-plugin": "1.2.0"
+	}
+}
