@@ -27,6 +27,6 @@ Test basic iframe simple frame
 !! wikitext
 <iframe src='http://not.example.com'></iframe>
 !! html
-<p><!-- Invalid host. 'not.example.com' is not one of www.wikipathways.org --><iframe></iframe>
+<p><!-- Invalid host. 'not.example.com' is not one of example.com --><iframe></iframe>
 </p>
 !! end

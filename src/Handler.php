@@ -25,6 +25,8 @@ use Parser;
 use PPFrame;
 
 class Handler extends Tag {
+	protected static ?string $name = "iframe";
+
 	/** @var array<string, string> */
 	protected array $attrMap = [
 		'allowfullscreen' => 'handleBoolValue',
