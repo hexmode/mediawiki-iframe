@@ -3,6 +3,7 @@
 	"type": "mediawiki-extension",
 	"license": "gpl-3.0",
 	"require": {
+		"composer/installers": "1.*,>=1.0.1",
 		"nichework/tag-builder": "^1.0"
 	},
 	"require-dev": {
@@ -13,12 +14,17 @@
 		"vimeo/psalm": "^4.6"
 	},
 	"scripts": {
+		"psalm": "psalm --output-format=emacs --show-info=true",
+		"phpcs": "phpcs -p -s --report=emacs",
+		"phan": "phan --no-progress-bar -m text | sed 's, ,:,'",
+		"parallel-lint": "parallel-lint . --exclude vendor --exclude node_modules",
+		"minus-x": "minus-x check .",
 		"lint": [
-			"parallel-lint . --exclude vendor --exclude node_modules",
-			"minus-x check .",
-			"phpcs -p -s --report=emacs",
-			"phan --no-progress-bar -m text | sed 's, ,:,'",
-			"psalm --output-format=emacs --show-info=true"
+			"parallel-lint",
+			"minus-x",
+			"phpcs",
+			"phan",
+			"psalm"
 		],
 		"fix": [
 			"minus-x fix .",
