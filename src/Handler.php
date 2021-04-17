@@ -17,12 +17,14 @@
  *
  * @author Mark A. Hershberger <mah@nichework.com>
  */
-namespace MediaWiki\Extension;
+namespace MediaWiki\Extension\IFrame;
 
 use NicheWork\MW\AttrException;
 use NicheWork\MW\Tag;
+use Parser;
+use PPFrame;
 
-class IFrame extends Tag {
+class Handler extends Tag {
 	/** @var array<string, string> */
 	protected array $attrMap = [
 		'allowfullscreen' => 'handleBoolValue',
@@ -30,6 +32,18 @@ class IFrame extends Tag {
 		'src' => 'setSource',
 		'width' => 'setWidth',
 	];
+	protected Config $config;
+
+	/**
+	 * Constructor for the iframe tag handler
+	 *
+	 * @param Parser $parser
+	 * @param PPFrame $frame
+	 */
+	protected function __construct( Parser $parser, PPFrame $frame ) {
+		parent::__construct( $parser, $frame );
+		$this->config = new Config();
+	}
 
 	/**
 	 * Get the height
@@ -91,7 +105,7 @@ class IFrame extends Tag {
 	 * @todo Make hosts config var
 	 */
 	private function isSafeHost( string $host ): string {
-		$validHosts = [ 'www.wikipathways.org' ];
+		$validHosts = (array)$this->config->get( "Domains" );
 		$inv = array_flip( $validHosts );
 		if ( !isset( $inv[$host] ) ) {
 			throw new AttrException(
@@ -105,13 +119,17 @@ class IFrame extends Tag {
 	/**
 	 * Clean up the URL.  Could whitelist hosts, types, and such here.
 	 *
-	 * @param string $url to clean
+	 * @param ?string $url to clean
 	 * @return ?string
 	 */
-	protected function setSource( string $url ): ?string {
+	protected function setSource( ?string $url ): ?string {
 		$ret = null;
-		$parsed = parse_url( $url );
-		if ( $parsed ) {
+		$parsed = null;
+		if ( $url ) {
+			$url = trim( $url, '"\'' );
+			$parsed = parse_url( $url );
+		}
+		if ( $url && $parsed ) {
 			$ret = self::isSafeScheme(
 				strval( self::getPartOrError( $parsed, 'scheme', $url ) )
 			) . '://';

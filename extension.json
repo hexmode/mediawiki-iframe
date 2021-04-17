@@ -12,11 +12,20 @@
 			"i18n"
 		]
 	},
-	"AutoloadClasses": {
-		"MediaWiki\\Extension\\IFrame": "src/IFrame.php"
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\IFrame\\": "src/"
 	},
 	"Hooks": {
-		"ParserFirstCallInit": "MediaWiki\\Extension\\IFrame::register"
+		"ParserFirstCallInit": "MediaWiki\\Extension\\IFrame\\Handler::register"
 	},
-	"manifest_version": 1
+	"config_prefix": "iFrame",
+	"config": {
+		"Domains": {
+			"value": [ "example.com" ],
+			"descriptionmsg": "iframe-config-hosts",
+			"path": false,
+			"public": true
+		}
+	},
+	"manifest_version": 2
 }

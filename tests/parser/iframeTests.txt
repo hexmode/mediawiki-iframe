@@ -1,12 +1,32 @@
 !! Version 2
 # Force the test runner to ensure the extension is loaded
-!! functionhooks
+!! hooks
 iframe
-!! endfunctionhooks
+!! endhooks
 
 !! test
-Test basic iframe
+Don't parse an un-closed tag
 !! wikitext
-<iframe>
+<IFrame>
 !! html
+<p>&lt;IFrame&gt;
+</p>
+!! end
+
+!! test
+Test basic iframe with no src
+!! wikitext
+<iframe></iframe>
+!! html
+<p><iframe></iframe>
+</p>
+!! end
+
+!! test
+Test basic iframe simple frame
+!! wikitext
+<iframe src='http://not.example.com'></iframe>
+!! html
+<p><!-- Invalid host. 'not.example.com' is not one of www.wikipathways.org --><iframe></iframe>
+</p>
 !! end
