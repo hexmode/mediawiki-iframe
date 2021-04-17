@@ -121,7 +121,7 @@ class Handler extends Tag {
 	 * @todo Make hosts config var
 	 */
 	private function isSafeHost( string $host ): string {
-		$validHosts = (array)$this->config->get( "Domains" );
+		$validHosts = (array)$this->config->getDomains();
 		$inv = array_flip( $validHosts );
 		if ( count( $inv ) > 0 && !isset( $inv[$host] ) ) {
 			throw new AttrException(

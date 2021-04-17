@@ -13,6 +13,12 @@ Don't parse an un-closed tag
 </p>
 !! end
 
+!! article
+MediaWiki:IFrame-cfg.json
+!! text
+{"domains":["json.example.com"]}
+!! endarticle
+
 !! test
 Test basic iframe with no src
 !! wikitext
@@ -45,7 +51,7 @@ Test basic iframe simple frame
 !! wikitext
 <iframe src='http://not.example.com'></iframe>
 !! html
-<p><!-- Invalid host. 'not.example.com' is not one of example.com -->
+<p><!-- Invalid host. 'not.example.com' is not one of example.com, json.example.com -->
 <!-- No src attribute given for iframe -->
 </p>
 !! end
@@ -68,7 +74,7 @@ iFrameDomains=['1.example.com','2.example.com']
 !! wikitext
 <iframe src='http://not.example.com'></iframe>
 !! html
-<p><!-- Invalid host. 'not.example.com' is not one of 1.example.com, 2.example.com -->
+<p><!-- Invalid host. 'not.example.com' is not one of 1.example.com, 2.example.com, json.example.com -->
 <!-- No src attribute given for iframe -->
 </p>
 !! end
@@ -85,12 +91,10 @@ iFrameDomains=['1.example.com','2.example.com']
 !! end
 
 !! test
-iframe config empty domains
-!! config
-iFrameDomains=[]
+iframe config from iframe-cfg.json
 !! wikitext
-<iframe src='http://1.example.com'></iframe>
+<iframe src='http://json.example.com'></iframe>
 !! html
-<p><iframe src="http://1.example.com"></iframe>
+<p><iframe src="http://json.example.com"></iframe>
 </p>
 !! end
