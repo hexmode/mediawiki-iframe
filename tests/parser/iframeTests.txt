@@ -18,7 +18,25 @@ Test basic iframe with no src
 !! wikitext
 <iframe></iframe>
 !! html
-<p><iframe></iframe>
+<p><!-- No src attribute given for iframe -->
+</p>
+!! end
+
+!! test
+Test basic iframe with simple src
+!! wikitext
+<iframe src='http://example.com/'></iframe>
+!! html
+<p><iframe src="http://example.com/"></iframe>
+</p>
+!! end
+
+!! test
+Test basic iframe with path-less source
+!! wikitext
+<iframe src='http://example.com'></iframe>
+!! html
+<p><iframe src="http://example.com"></iframe>
 </p>
 !! end
 
@@ -27,6 +45,52 @@ Test basic iframe simple frame
 !! wikitext
 <iframe src='http://not.example.com'></iframe>
 !! html
-<p><!-- Invalid host. 'not.example.com' is not one of example.com --><iframe></iframe>
+<p><!-- Invalid host. 'not.example.com' is not one of example.com -->
+<!-- No src attribute given for iframe -->
+</p>
+!! end
+
+!! test
+Test basic iframe change domain config
+!! config
+iFrameDomains=['not.example.com']
+!! wikitext
+<iframe src='http://not.example.com'></iframe>
+!! html
+<p><iframe src="http://not.example.com"></iframe>
+</p>
+!! end
+
+!! test
+iframe config multiple domains not member
+!! config
+iFrameDomains=['1.example.com','2.example.com']
+!! wikitext
+<iframe src='http://not.example.com'></iframe>
+!! html
+<p><!-- Invalid host. 'not.example.com' is not one of 1.example.com, 2.example.com -->
+<!-- No src attribute given for iframe -->
+</p>
+!! end
+
+!! test
+iframe config multiple domains is member
+!! config
+iFrameDomains=['1.example.com','2.example.com']
+!! wikitext
+<iframe src='http://1.example.com'></iframe>
+!! html
+<p><iframe src="http://1.example.com"></iframe>
+</p>
+!! end
+
+!! test
+iframe config empty domains
+!! config
+iFrameDomains=[]
+!! wikitext
+<iframe src='http://1.example.com'></iframe>
+!! html
+<p><iframe src="http://1.example.com"></iframe>
 </p>
 !! end

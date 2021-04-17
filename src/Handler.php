@@ -34,6 +34,9 @@ class Handler extends Tag {
 		'src' => 'setSource',
 		'width' => 'setWidth',
 	];
+
+	/** @var array<int, string> */
+	protected array $mandatoryAttributes = [ "src" ];
 	protected Config $config;
 
 	/**
@@ -66,18 +69,29 @@ class Handler extends Tag {
 	 *
 	 * @param array<string,string|int> $parsed the result of parse_url()
 	 * @param string $part a key into $parsed
+	 * @return string the part requested
+	 */
+	private function getPart( array $parsed, string $part ): string {
+		return strval( $parsed[$part] ?? "" );
+	}
+
+	/**
+	 * Convenience function for throwing errors when we need to
+	 *
+	 * @param array<string,string|int> $parsed the result of parse_url()
+	 * @param string $part a key into $parsed
 	 * @param string $url the whole url, used for error messages
-	 * @return int|string the part requested
+	 * @return string the part requested
 	 */
 	private function getPartOrError(
 		array $parsed,
 		string $part,
 		string $url
-	) {
+	): string {
 		if ( !isset( $parsed[$part] ) ) {
 			throw new AttrException( "$part not found in $url" );
 		}
-		return $parsed[$part];
+		return $this->getPart( $parsed, $part );
 	}
 
 	/**
@@ -109,7 +123,7 @@ class Handler extends Tag {
 	private function isSafeHost( string $host ): string {
 		$validHosts = (array)$this->config->get( "Domains" );
 		$inv = array_flip( $validHosts );
-		if ( !isset( $inv[$host] ) ) {
+		if ( count( $inv ) > 0 && !isset( $inv[$host] ) ) {
 			throw new AttrException(
 				"Invalid host. '$host' is not one of "
 				. implode( ", ", $validHosts )
@@ -142,7 +156,7 @@ class Handler extends Tag {
 			if ( isset( $parsed['port'] ) ) {
 				$ret .= ':' . $parsed['port'];
 			}
-			$ret .= self::getPartOrError( $parsed, 'path', $url );
+			$ret .= self::getPart( $parsed, 'path', $url );
 			if ( isset( $parsed['query'] ) ) {
 				$ret .= '?' . $parsed['query'];
 			}
