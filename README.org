@@ -20,7 +20,7 @@ This method is enabled by default, but if you do not want your administrators ch
 $iFrameOnWikiConfig=false;
 #+end_src
 
-If you leave the method enabled, people with the [[https://www.mediawiki.org/wiki/Manual:User_rights#List_of_permissions][editsitejson]] (administrators and interface administrators by default) will be able to change the value of =[[MediaWiki:IFrame-cfg.json]]=. To authorize the same three domains as the PHP configuration above, the following would be used:
+If you leave the method enabled, people with the [[https://www.mediawiki.org/wiki/Manual:User_rights#List_of_permissions][editsitejson]] (administrators and interface administrators by default) will be able to change the value of =[[MediaWiki:IFrame-cfg.json]]=. To authorize the only three domains, the following would be used:
 #+begin_src json
 {
     "domains": [
@@ -33,7 +33,7 @@ If you leave the method enabled, people with the [[https://www.mediawiki.org/wik
 ** PHP Configuration
 This is the familiar "set a PHP variable in your =LocalSettings.php=" method.
 
-In your =LocalSettings.php=, add a setting for the variable =$iFrameDomains= that contains an array of domains that are allowed.  For example:
+In your =LocalSettings.php=, add a setting for the variable =$iFrameDomains= that contains an array of domains that are allowed.  For example:, to authorize the same three domains as are in the above wiki configuration.
 #+begin_src php
    $iFrameDomains = [
 	   'one.example.com',
