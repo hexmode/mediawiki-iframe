@@ -1,10 +1,11 @@
 {
-	"name": "mediawiki/iframe",
+	"name": "mediawiki/iframe-tag",
 	"type": "mediawiki-extension",
 	"license": "gpl-3.0",
 	"require": {
 		"composer/installers": "1.*,>=1.0.1",
-		"nichework/tag-builder": "^1.2"
+		"nichework/tag-builder": "^1.2",
+		"php": ">=7.4"
 	},
 	"require-dev": {
 		"mediawiki/mediawiki-codesniffer": "30.0.0",
@@ -34,7 +35,7 @@
 		]
 	},
 	"extra": {
-		"installer-name": "IFrame",
+		"installer-name": "IFrameTag",
 		"phan-taint-check-plugin": "1.2.0"
 	}
 }

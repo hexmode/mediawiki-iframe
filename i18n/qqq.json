@@ -4,5 +4,7 @@
 			"[http://mwstake.org/ Mark A. Hershberger]"
 		]
 	},
-	"iframe-desc": "{{desc|name=IFrame|url=https://www.mediawiki.org/wiki/Extension:IFrame}}"
+	"iframe-desc": "{{desc|name=IFrame|url=https://github.com/hexmode/mediawiki-iframe}}",
+	"iframe-config-hosts": "Configuration for list of hosts to allow.",
+	"iframe-config-onwikiconfig": "Configuration to determine if on-wiki configuration is allowed."
 }

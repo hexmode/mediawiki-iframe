@@ -30,6 +30,8 @@ Test basic iframe with no src
 
 !! test
 Test basic iframe with simple src
+!! config
+iFrameDomains=['example.com']
 !! wikitext
 <iframe src='http://example.com/'></iframe>
 !! html
@@ -39,6 +41,8 @@ Test basic iframe with simple src
 
 !! test
 Test basic iframe with path-less source
+!! config
+iFrameDomains=['EXAMPLE.COM']
 !! wikitext
 <iframe src='http://example.com'></iframe>
 !! html
@@ -48,10 +52,13 @@ Test basic iframe with path-less source
 
 !! test
 Test basic iframe simple frame
+!! config
+iFrameDomains=['example.com']
+iFrameOnWikiConfig=false
 !! wikitext
 <iframe src='http://not.example.com'></iframe>
 !! html
-<p><!-- Invalid host. 'not.example.com' is not one of example.com, json.example.com -->
+<p><!-- Invalid host. 'not.example.com' is not one of example.com -->
 <!-- No src attribute given for iframe -->
 </p>
 !! end
@@ -70,7 +77,7 @@ iFrameDomains=['not.example.com']
 !! test
 iframe config multiple domains not member
 !! config
-iFrameDomains=['1.example.com','2.example.com']
+iFrameDomains=['1.EXAMPLE.COM','2.example.com']
 !! wikitext
 <iframe src='http://not.example.com'></iframe>
 !! html
@@ -82,7 +89,7 @@ iFrameDomains=['1.example.com','2.example.com']
 !! test
 iframe config multiple domains is member
 !! config
-iFrameDomains=['1.example.com','2.example.com']
+iFrameDomains=['1.example.com']
 !! wikitext
 <iframe src='http://1.example.com'></iframe>
 !! html
@@ -94,6 +101,51 @@ iFrameDomains=['1.example.com','2.example.com']
 iframe config from iframe-cfg.json
 !! wikitext
 <iframe src='http://json.example.com'></iframe>
+!! html
+<p><iframe src="http://json.example.com"></iframe>
+</p>
+!! end
+
+!! test
+iframe a bool present
+!! wikitext
+<iframe allowfullscreen src='http://json.example.com'></iframe>
+!! html
+<p><iframe allowfullscreen="true" src="http://json.example.com"></iframe>
+</p>
+!! end
+
+!! test
+iframe a bool true
+!! wikitext
+<iframe allowfullscreen=true src='http://json.example.com'></iframe>
+!! html
+<p><iframe allowfullscreen="true" src="http://json.example.com"></iframe>
+</p>
+!! end
+
+!! test
+iframe a bool yes
+!! wikitext
+<iframe allowfullscreen=yes src='http://json.example.com'></iframe>
+!! html
+<p><iframe allowfullscreen="true" src="http://json.example.com"></iframe>
+</p>
+!! end
+
+!! test
+iframe a bool false
+!! wikitext
+<iframe allowfullscreen=false src='http://json.example.com'></iframe>
+!! html
+<p><iframe src="http://json.example.com"></iframe>
+</p>
+!! end
+
+!! test
+iframe a bool false
+!! wikitext
+<iframe allowfullscreen="no" src='http://json.example.com'></iframe>
 !! html
 <p><iframe src="http://json.example.com"></iframe>
 </p>

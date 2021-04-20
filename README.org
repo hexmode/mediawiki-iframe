@@ -1,4 +1,50 @@
-== IFrame extension for MediaWiki ==
+#+Title:  MediaWiki IFrameTag extension
+#+Author: Mark A. Hershberger
 
-This is a pretty basic iframe extension.  It attempts to sanitize the url
+This extension allows you use [[https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element][iframe]] tags in your wiki and makes some attempt to validate the URLs being embedded in iframes.  Your wiki admins will be able to use a page in the MediaWiki namespace to update the list of allowed URLs.
 
+As of this writing, only the following attributes are supported:
+- src :: Address of the resource
+- height :: Vertical dimension
+- width :: Horizontal dimension
+- allowfullscreen :: Whether to allow the iframe's contents to use [[https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen][requestFullscreen()]]
+- style :: This is the only [[https://www.w3.org/html/wg/spec/elements.html#global-attributes][global attribute]] that is supported.  It is implemented via the base [[https://packagist.org/packages/nichework/tag-builder][tag builder class]].
+
+* How the tag is parsed
+The =src= attribute is parsed using PHP's [[https://www.php.net/parse_url][parse_url]].  The schema is [[https://github.com/hexmode/mediawiki-iframe/blob/9fefe2141e3c664f4caef48c868624e34d5de8e0/src/Handler.php#L104][verified as safe]] (only =http=, =https= and =ftp= are allowed), the URL's domains are checked against a list of allowed urls (if specified), any specified port is added, as is any path, query string (the part following =?=) or fragment (the part following =#=).
+
+If problems are found with when parsing the iframe tag attributes, that attribute is skipped, notes about what went wrong are they are inserted into the page output as HTML comments.
+
+If the =src= attribute has a problem, then the iframe tag is skipped and the author will have to check the html source to find any problems.
+
+* Configuring the allowed hosts
+Currently, host name matching is done based on the full domain name.  If a list of names is allowed hosts is given in the configuration and the host in the =src= attiribute of the =iframe= tag is not on the configured list of hosts, then the =iframe= tag is not shown on the wiki.
+
+There are two methods for configuring permissible domains.
+** PHP Configuration
+This is the familiar "set a PHP variable in your =LocalSettings.php=" method.
+
+In your =LocalSettings.php=, add a setting for the variable =$iFrameDomains= that contains an array of domains that are allowed.  For example:
+#+begin_src php
+   $iFrameDomains = [
+	   'one.example.com',
+	   'two.example.com',
+	   'three.example.com'
+   ];
+#+end_src
+** On Wiki configuration
+This method is enabled by default, but if you do not want your administrators changing the list of allowed domains, you can set =$iFrameOnWikiConfig= to false:
+#+begin_src php
+$iFrameOnWikiConfig=false;
+#+end_src
+
+If you leave the method enabled, people with the [[https://www.mediawiki.org/wiki/Manual:User_rights#List_of_permissions][editsitejson]] (administrators and interface administrators by default) will be able to change the value of =[[MediaWiki:IFrame-cfg.json]]=. To authorize the same three domains as the PHP configuration above, the following would be used:
+#+begin_src json
+{
+    "domains": [
+        "one.example.com",
+        "two.example.com",
+        "two.example.com"
+    ]
+}
+#+end_src

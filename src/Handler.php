@@ -29,10 +29,10 @@ class Handler extends Tag {
 
 	/** @var array<string, string> */
 	protected array $attrMap = [
-		'allowfullscreen' => 'handleBoolValue',
-		'height' => 'setHeight',
+		'allowfullscreen' => 'handleBool',
+		'height' => 'handleInt',
 		'src' => 'setSource',
-		'width' => 'setWidth',
+		'width' => 'handleInt',
 	];
 
 	/** @var array<int, string> */
@@ -48,20 +48,6 @@ class Handler extends Tag {
 	protected function __construct( Parser $parser, PPFrame $frame ) {
 		parent::__construct( $parser, $frame );
 		$this->config = new Config();
-	}
-
-	/**
-	 * Get the height
-	 */
-	protected function setHeight( string $value ): string {
-		return $this->handleInt( $value, "height" );
-	}
-
-	/**
-	 * Get the width
-	 */
-	protected function setWidth( string $value ): string {
-		return $this->handleInt( $value, "width" );
 	}
 
 	/**
@@ -89,7 +75,7 @@ class Handler extends Tag {
 		string $url
 	): string {
 		if ( !isset( $parsed[$part] ) ) {
-			throw new AttrException( "$part not found in $url" );
+			throw new AttrException( "Part missing: $part not found in $url" );
 		}
 		return $this->getPart( $parsed, $part );
 	}
@@ -121,6 +107,7 @@ class Handler extends Tag {
 	 * @todo Make hosts config var
 	 */
 	private function isSafeHost( string $host ): string {
+		$host = strtolower( $host );
 		$validHosts = (array)$this->config->getDomains();
 		$inv = array_flip( $validHosts );
 		if ( count( $inv ) > 0 && !isset( $inv[$host] ) ) {
@@ -138,7 +125,7 @@ class Handler extends Tag {
 	 * @param ?string $url to clean
 	 * @return ?string
 	 */
-	protected function setSource( ?string $url ): ?string {
+	protected function setSource( string $name, ?string $url ): ?string {
 		$ret = null;
 		$parsed = null;
 		if ( $url ) {

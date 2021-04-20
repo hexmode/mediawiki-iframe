@@ -4,5 +4,7 @@
 			"[http://mwstake.org/ Mark A. Hershberger]"
 		]
 	},
-	"iframe-desc": "Provides a usable iFrame element."
+	"iframe-desc": "Provides a usable iframe element.",
+	"iframe-config-hosts": "A list of allowed hosts for iframes.",
+	"iframe-config-onwikiconfig": "A boolean indicating configuration can be done on-wiki."
 }
