@@ -21,7 +21,7 @@ class Config extends GlobalVarConfig {
 	 * The list of configured domains.
 	 * @var string[]
 	 */
-	private ?array $domains = null;
+	private $domains = null;
 
 	public function __construct() {
 		parent::__construct( 'iFrame' );
@@ -46,7 +46,7 @@ class Config extends GlobalVarConfig {
 			if ( $this->get( self::KEY_ON_WIKI_CFG ) === true ) {
 				$ret = array_merge( $ret, $this->getOnWikiDomains() );
 			}
-			$this->domains = array_map( fn ( $name ) => strtolower( $name ), $ret );
+			$this->domains = array_map( function ( $name ) { return strtolower( $name ); }, $ret );
 		}
 		return $this->domains;
 	}

@@ -8,7 +8,7 @@
 	"requires": {
 		"MediaWiki": ">= 1.34.0",
 		"platform": {
-			"php": ">= 7.4"
+			"php": ">= 7.3"
 		}
 	},
 	"type": "parserhook",

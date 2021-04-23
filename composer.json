@@ -4,8 +4,8 @@
 	"license": "gpl-3.0",
 	"require": {
 		"composer/installers": "1.*,>=1.0.1",
-		"nichework/tag-builder": "^1.2",
-		"php": ">=7.4"
+		"nichework/tag-builder": "^1.4",
+		"php": ">=7.3"
 	},
 	"require-dev": {
 		"mediawiki/mediawiki-codesniffer": "30.0.0",

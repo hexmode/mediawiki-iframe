@@ -25,10 +25,11 @@ use Parser;
 use PPFrame;
 
 class Handler extends Tag {
-	protected static ?string $name = "iframe";
+	/** @var ?string */
+	protected static $name = "iframe";
 
 	/** @var array<string, string> */
-	protected array $attrMap = [
+	protected $attrMap = [
 		'allowfullscreen' => 'handleBool',
 		'height' => 'handleInt',
 		'src' => 'setSource',
@@ -36,8 +37,8 @@ class Handler extends Tag {
 	];
 
 	/** @var array<int, string> */
-	protected array $mandatoryAttributes = [ "src" ];
-	protected Config $config;
+	protected $mandatoryAttributes = [ "src" ];
+	protected $config;
 
 	/**
 	 * Constructor for the iframe tag handler
@@ -57,7 +58,7 @@ class Handler extends Tag {
 	 * @param string $part a key into $parsed
 	 * @return string the part requested
 	 */
-	private function getPart( array $parsed, string $part ): string {
+	private function getPart( array $parsed, $part ): string {
 		return strval( $parsed[$part] ?? "" );
 	}
 
@@ -71,8 +72,8 @@ class Handler extends Tag {
 	 */
 	private function getPartOrError(
 		array $parsed,
-		string $part,
-		string $url
+		$part,
+		$url
 	): string {
 		if ( !isset( $parsed[$part] ) ) {
 			throw new AttrException( "Part missing: $part not found in $url" );
@@ -87,7 +88,7 @@ class Handler extends Tag {
 	 * @return string
 	 * @todo Make schemes config var
 	 */
-	private function isSafeScheme( string $scheme ): string {
+	private function isSafeScheme( $scheme ): string {
 		$validSchemes = [ "http", "https", "ftp" ];
 		$inv = array_flip( $validSchemes );
 		if ( !isset( $inv[$scheme] ) ) {
@@ -106,7 +107,7 @@ class Handler extends Tag {
 	 * @return string
 	 * @todo Make hosts config var
 	 */
-	private function isSafeHost( string $host ): string {
+	private function isSafeHost( $host ): string {
 		$host = strtolower( $host );
 		$validHosts = (array)$this->config->getDomains();
 		$inv = array_flip( $validHosts );
@@ -125,7 +126,7 @@ class Handler extends Tag {
 	 * @param ?string $url to clean
 	 * @return ?string
 	 */
-	protected function setSource( string $name, ?string $url ): ?string {
+	protected function setSource( $name, $url ): string {
 		$ret = null;
 		$parsed = null;
 		if ( $url ) {
