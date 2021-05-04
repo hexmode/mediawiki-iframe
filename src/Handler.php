@@ -17,7 +17,7 @@
  *
  * @author Mark A. Hershberger <mah@nichework.com>
  */
-namespace MediaWiki\Extension\IFrame;
+namespace MediaWiki\Extension\IFrameTag;
 
 use NicheWork\MW\AttrException;
 use NicheWork\MW\Tag;

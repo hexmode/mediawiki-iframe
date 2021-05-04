@@ -1,6 +1,6 @@
 {
 	"name": "IFrameTag",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"author": [
 		"[//hexmode.com Mark A. Hershberger]"
 	],
@@ -19,10 +19,10 @@
 		]
 	},
 	"AutoloadNamespaces": {
-		"MediaWiki\\Extension\\IFrame\\": "src/"
+		"MediaWiki\\Extension\\IFrameTag\\": "src/"
 	},
 	"Hooks": {
-		"ParserFirstCallInit": "MediaWiki\\Extension\\IFrame\\Handler::register"
+		"ParserFirstCallInit": "MediaWiki\\Extension\\IFrameTag\\Handler::register"
 	},
 	"config_prefix": "iFrame",
 	"config": {

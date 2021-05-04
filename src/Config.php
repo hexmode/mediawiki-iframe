@@ -1,6 +1,6 @@
 <?php
 
-namespace MediaWiki\Extension\IFrame;
+namespace MediaWiki\Extension\IFrameTag;
 
 use GlobalVarConfig;
 use MWException;
