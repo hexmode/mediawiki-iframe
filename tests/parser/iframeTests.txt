@@ -31,7 +31,7 @@ Test basic iframe with no src
 !! test
 Test basic iframe with simple src
 !! config
-iFrameDomains=['example.com']
+iFrameDomains=["example.com"]
 !! wikitext
 <iframe src='http://example.com/'></iframe>
 !! html
@@ -42,7 +42,7 @@ iFrameDomains=['example.com']
 !! test
 Test basic iframe with path-less source
 !! config
-iFrameDomains=['EXAMPLE.COM']
+iFrameDomains=["EXAMPLE.COM"]
 !! wikitext
 <iframe src='http://example.com'></iframe>
 !! html
@@ -53,7 +53,7 @@ iFrameDomains=['EXAMPLE.COM']
 !! test
 Test basic iframe simple frame
 !! config
-iFrameDomains=['example.com']
+iFrameDomains=["example.com"]
 iFrameOnWikiConfig=false
 !! wikitext
 <iframe src='http://not.example.com'></iframe>
@@ -66,7 +66,7 @@ iFrameOnWikiConfig=false
 !! test
 Test basic iframe change domain config
 !! config
-iFrameDomains=['not.example.com']
+iFrameDomains=["not.example.com"]
 !! wikitext
 <iframe src='http://not.example.com'></iframe>
 !! html
@@ -77,7 +77,7 @@ iFrameDomains=['not.example.com']
 !! test
 iframe config multiple domains not member
 !! config
-iFrameDomains=['1.EXAMPLE.COM','2.example.com']
+iFrameDomains=["1.EXAMPLE.COM","2.example.com"]
 !! wikitext
 <iframe src='http://not.example.com'></iframe>
 !! html
@@ -89,7 +89,7 @@ iFrameDomains=['1.EXAMPLE.COM','2.example.com']
 !! test
 iframe config multiple domains is member
 !! config
-iFrameDomains=['1.example.com']
+iFrameDomains=["1.example.com"]
 !! wikitext
 <iframe src='http://1.example.com'></iframe>
 !! html
