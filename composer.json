@@ -4,38 +4,48 @@
 	"license": "gpl-3.0",
 	"require": {
 		"composer/installers": "1.*,>=1.0.1",
-		"nichework/tag-builder": "^1.4",
+		"nichework/tag-builder": "^1.5",
 		"php": ">=7.3"
 	},
 	"require-dev": {
-		"mediawiki/mediawiki-codesniffer": "30.0.0",
-		"mediawiki/mediawiki-phan-config": "0.9.1",
-		"mediawiki/minus-x": "1.0.0",
-		"jakub-onderka/php-parallel-lint": "1.0.0",
-		"vimeo/psalm": "^4.6"
+		"mediawiki/mediawiki-codesniffer": "^42.0",
+		"mediawiki/mediawiki-phan-config": "^0.13.0",
+		"mediawiki/minus-x": "^1.1",
+		"php-parallel-lint/php-parallel-lint": "^1.3",
+		"vimeo/psalm": "^5.15"
 	},
 	"scripts": {
-		"psalm": "psalm --output-format=emacs --show-info=true",
-		"phpcs": "phpcs -p -s --report=emacs",
-		"phan": "phan --no-progress-bar -m text | sed 's, ,:,'",
-		"parallel-lint": "parallel-lint . --exclude vendor --exclude node_modules",
-		"minus-x": "minus-x check .",
-		"lint": [
-			"parallel-lint",
-			"minus-x",
-			"phpcs",
-			"phan",
-			"psalm"
+		"test": [
+			"parallel-lint . --exclude vendor --exclude node_modules",
+			"minus-x check .",
+			"npm test",
+			"php \"$MW_INSTALL_PATH/tests/parser/parserTests.php\" --file tests/parser/*"
+		],
+		"error-format-test": [
+			"phpcs -s --report=emacs --basepath=$PWD . || true",
+			"phan -d . -m text --analyze-twice --no-progress-bar | sed 's, ,:,'",
+			"psalm --output-format=emacs --show-info=true --no-progress | sed \"s,${PWD}/,,\""
 		],
 		"fix": [
 			"minus-x fix .",
 			"phpcbf",
-			"PHAN_DISABLE_XDEBUG_WARN=1 phan --no-progress-bar -m text --automatic-fix",
-			"psalm --alter --issues=all"
-		]
+			"psalter --issues=all"
+		],
+		"phan": "phan -d . --long-progress-bar",
+		"phpcs": "phpcs -sp --cache"
 	},
 	"extra": {
 		"installer-name": "IFrameTag",
 		"phan-taint-check-plugin": "1.2.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"MediaWiki\\Extension\\IFrameTag\\": "src/"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true
+		}
 	}
 }

@@ -25,11 +25,10 @@ use Parser;
 use PPFrame;
 
 class Handler extends Tag {
-	/** @var ?string */
-	protected static $name = "iframe";
+	protected static ?string $name = "iframe";
 
-	/** @var array<string, string> */
-	protected $attrMap = [
+	/** @var ?array<string, string> */
+	protected ?array $attrMap = [
 		'allowfullscreen' => 'handleBool',
 		'height' => 'handleInt',
 		'src' => 'handleUrl',
@@ -37,8 +36,8 @@ class Handler extends Tag {
 	];
 
 	/** @var array<int, string> */
-	protected $mandatoryAttributes = [ "src" ];
-	protected $config;
+	protected ?array $mandatoryAttributes = [ "src" ];
+	protected Config $config;
 
 	/**
 	 * Constructor for the iframe tag handler
@@ -60,12 +59,10 @@ class Handler extends Tag {
 	 */
 	protected function isSafeHost( $host ): string {
 		$host = strtolower( $host );
-		$validHosts = (array)$this->config->getDomains();
-		$inv = array_flip( $validHosts );
-		if ( count( $inv ) > 0 && !isset( $inv[$host] ) ) {
+		$validHosts = $this->config->getDomains();
+		if ( !isset( $validHosts[$host] ) ) {
 			throw new AttrException(
-				"Invalid host. '$host' is not one of "
-				. implode( ", ", $validHosts )
+				wfMessage( "iframe-invalid-domain", $host, implode( ", ", array_keys( $validHosts ) ) )->plain()
 			);
 		}
 		return $host;

@@ -14,11 +14,11 @@ $cfg['file_list'] = array_merge(
 $otherExtensions = [ 'vendor/nichework/tag-builder' ];
 
 $cfg['directory_list'] = array_merge(
-	$cfg['directory_list'], $otherExtensions
+	$cfg['directory_list'], $otherExtensions, [ realpath( getenv( "MW_INSTALL_PATH" ) ) ]
 );
 
 $cfg['exclude_analysis_directory_list'] = array_merge(
-	$cfg['exclude_analysis_directory_list'], $otherExtensions
+	$cfg['exclude_analysis_directory_list'], $otherExtensions, [ realpath( getenv( "MW_INSTALL_PATH" ) ), 'node_modules' ]
 );
 
 # Put messages you want to suppress here.

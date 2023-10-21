@@ -6,5 +6,9 @@
 	},
 	"iframe-desc": "Provides a usable iframe element.",
 	"iframe-config-hosts": "A list of allowed hosts for iframes.",
-	"iframe-config-onwikiconfig": "A boolean indicating configuration can be done on-wiki."
+	"iframe-config-onwikiconfig": "A boolean indicating configuration can be done on-wiki.",
+	"iframe-config-error-array-expected": "The variable $iFrameDomains is expected to be an array. Got a value with a type of '$1' instead.",
+	"iframe-cfg-json-error-array-expected": "The json dictionary in the [[MediaWiki:iframe-cfg.json]] page should have an array in the \"domains\" key. Got a value with a type of '$1' instead",
+	"iframe-invalid-domain": "Invalid domain: $1.  Domain should be one of $2.",
+	"iframe-cfg.json": "{\"domains\":[]}"
 }

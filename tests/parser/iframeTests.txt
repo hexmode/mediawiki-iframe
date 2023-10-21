@@ -14,7 +14,7 @@ Don't parse an un-closed tag
 !! end
 
 !! article
-MediaWiki:IFrame-cfg.json
+MediaWiki:iframe-cfg.json
 !! text
 {"domains":["json.example.com"]}
 !! endarticle
@@ -51,14 +51,14 @@ iFrameDomains=["EXAMPLE.COM"]
 !! end
 
 !! test
-Test basic iframe simple frame
+Test basic iframe simple frame and mis-matched domain
 !! config
 iFrameDomains=["example.com"]
 iFrameOnWikiConfig=false
 !! wikitext
 <iframe src='http://not.example.com'></iframe>
 !! html
-<p><!-- Invalid host. 'not.example.com' is not one of example.com -->
+<p><!-- Invalid domain: not.example.com.  Domain should be one of example.com. -->
 <!-- No src attribute given for iframe -->
 </p>
 !! end
@@ -81,7 +81,7 @@ iFrameDomains=["1.EXAMPLE.COM","2.example.com"]
 !! wikitext
 <iframe src='http://not.example.com'></iframe>
 !! html
-<p><!-- Invalid host. 'not.example.com' is not one of 1.example.com, 2.example.com, json.example.com -->
+<p><!-- Invalid domain: not.example.com.  Domain should be one of 1.example.com, 2.example.com, json.example.com. -->
 <!-- No src attribute given for iframe -->
 </p>
 !! end
@@ -125,7 +125,7 @@ iframe a bool true
 !! end
 
 !! test
-iframe a bool yes
+iframe a bool “yes”
 !! wikitext
 <iframe allowfullscreen=yes src='http://json.example.com'></iframe>
 !! html
@@ -143,7 +143,7 @@ iframe a bool false
 !! end
 
 !! test
-iframe a bool false
+iframe a bool “no”
 !! wikitext
 <iframe allowfullscreen="no" src='http://json.example.com'></iframe>
 !! html
