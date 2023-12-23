@@ -8,6 +8,7 @@ As of this writing, only the following attributes are supported:
 - height :: Vertical dimension
 - width :: Horizontal dimension
 - allowfullscreen :: Whether to allow the iframe's contents to use [[https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen][requestFullscreen()]]
+- sandbox :: Controls the restrictions applied to the content embedded in the iframe
 - style :: This is the only [[https://www.w3.org/html/wg/spec/elements.html#global-attributes][global attribute]] that is supported.  It is implemented via the base [[https://packagist.org/packages/nichework/tag-builder][tag builder class]].
 
 * Configuring the allowed hosts
