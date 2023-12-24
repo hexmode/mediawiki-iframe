@@ -150,3 +150,47 @@ iframe a bool “no”
 <p><iframe src="http://json.example.com"></iframe>
 </p>
 !! end
+
+!! test
+Test iframe with empty-value sandbox (implicit)
+!! config
+iFrameDomains=["example.com"]
+!! wikitext
+<iframe src='http://example.com/' sandbox></iframe>
+!! html
+<p><iframe sandbox="" src="http://example.com/"></iframe>
+</p>
+!! end
+
+!! test
+Test iframe with empty-value sandbox (explicit)
+!! config
+iFrameDomains=["example.com"]
+!! wikitext
+<iframe src='http://example.com/' sandbox=""></iframe>
+!! html
+<p><iframe sandbox="" src="http://example.com/"></iframe>
+</p>
+!! end
+
+!! test
+Test iframe with single-value sandbox
+!! config
+iFrameDomains=["example.com"]
+!! wikitext
+<iframe src='http://example.com/' sandbox="allow-scripts"></iframe>
+!! html
+<p><iframe sandbox="allow-scripts" src="http://example.com/"></iframe>
+</p>
+!! end
+
+!! test
+Test iframe with multi-value sandbox
+!! config
+iFrameDomains=["example.com"]
+!! wikitext
+<iframe src='http://example.com/' sandbox="allow-forms allow-scripts"></iframe>
+!! html
+<p><iframe sandbox="allow-forms allow-scripts" src="http://example.com/"></iframe>
+</p>
+!! end

@@ -31,6 +31,7 @@ class Handler extends Tag {
 	protected ?array $attrMap = [
 		'allowfullscreen' => 'handleBool',
 		'height' => 'handleInt',
+		'sandbox' => 'handleString',
 		'src' => 'handleUrl',
 		'width' => 'handleInt',
 	];
