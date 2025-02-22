@@ -19,7 +19,7 @@
 			"parallel-lint . --exclude vendor --exclude node_modules",
 			"minus-x check .",
 			"npm test",
-			"php \"$MW_INSTALL_PATH/tests/parser/parserTests.php\" --file tests/parser/*"
+			"php \"$MW_INSTALL_PATH/tests/parser/parserTests.php\" --color=no --file tests/parser/*"
 		],
 		"error-format-test": [
 			"phpcs -s --report=emacs --basepath=$PWD . || true",

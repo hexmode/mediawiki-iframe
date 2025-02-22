@@ -6,6 +6,7 @@ use Exception;
 use GlobalVarConfig;
 use JsonContent;
 use MediaWiki\MediaWikiServices;
+use stdClass;
 use Title;
 
 class Config extends GlobalVarConfig {
@@ -70,10 +71,9 @@ class Config extends GlobalVarConfig {
 	 * @psalm-return array<array-key, string>
 	 */
 	protected function getOnWikiDomains(): array {
-		$ret = [];
 		$cfg = Title::makeTitleSafe( NS_MEDIAWIKI, self::CFG_PAGE );
 		$content = null;
-		$value = [];
+		$value = null;
 
 		if ( $cfg !== null ) {
 			$wpf = MediaWikiServices::getInstance()->getWikiPageFactory();
@@ -82,10 +82,15 @@ class Config extends GlobalVarConfig {
 
 		if ( $content instanceof JsonContent ) {
 			$status = $content->getData();
-			$value = $status->isGood() ? $status->getValue() : [];
+			/** @var stdClass|string */
+			$value = $status->isGood() ? $status->getValue() : "";
 		}
 
-		if ( property_exists( $value, 'domains' ) && !is_array( $value->domains ) ) {
+		if ( !is_object( $value ) || !property_exists( $value, 'domains' ) ) {
+			return [];
+		}
+
+		if ( !is_array( $value->domains ) ) {
 			# Throwing MWException here since if we run into this someone has just modified
 			# the CFG_PAGE (probably?)
 			throw new Exception(
@@ -93,10 +98,6 @@ class Config extends GlobalVarConfig {
 			);
 		}
 
-		if ( property_exists( $value, 'domains' ) ) {
-			$ret = array_filter( $value->domains, "is_string" );
-		}
-
-		return $ret;
+		return array_filter( $value->domains, "is_string" );
 	}
 }
