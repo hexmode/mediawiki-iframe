@@ -7,7 +7,7 @@ use GlobalVarConfig;
 use JsonContent;
 use MediaWiki\MediaWikiServices;
 use stdClass;
-use Title;
+use MediaWiki\Title\Title;
 
 class Config extends GlobalVarConfig {
 
