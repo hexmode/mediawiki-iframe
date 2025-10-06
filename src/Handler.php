@@ -34,6 +34,7 @@ class Handler extends Tag {
 		'sandbox' => 'handleString',
 		'src' => 'handleUrl',
 		'width' => 'handleInt',
+		'scrolling' => 'handleBool',
 	];
 
 	/** @var array<int, string> */
